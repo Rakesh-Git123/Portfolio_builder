@@ -48,18 +48,32 @@
 
         <!-- About Me -->
         <section class="mb-16 animate-fade-in">
-            <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100 transform transition-all hover:shadow-2xl">
-                <div class="p-8 md:p-10">
-                    <div class="flex items-center mb-6">
-                        <div class="h-12 w-1 bg-gradient-to-b from-blue-500 to-purple-500 rounded-full mr-4"></div>
-                        <h2 class="text-3xl font-bold text-gray-900">About Me</h2>
-                    </div>
-                    <p class="text-gray-600 text-lg leading-relaxed">
-                        {{ $portfolio->aboutMe->description ?? 'No content yet.' }}
-                    </p>
-                </div>
+    <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100 transform transition-all hover:shadow-2xl">
+        <div class="p-8 md:p-10">
+            <div class="flex items-center mb-6">
+                <div class="h-12 w-1 bg-gradient-to-b from-blue-500 to-purple-500 rounded-full mr-4"></div>
+                <h2 class="text-3xl font-bold text-gray-900">About Me</h2>
             </div>
-        </section>
+
+            {{-- Show image if it exists --}}
+            @if (!empty($portfolio->aboutMe->image))
+                <div class="mb-6 text-center">
+                    <img 
+                        src="{{ asset($portfolio->aboutMe->image) }}" 
+                        alt="About Me Image" 
+                        class="rounded-xl mx-auto max-h-64 shadow-md"
+                    >
+                </div>
+            @endif
+
+            {{-- Show description --}}
+            <p class="text-gray-600 text-lg leading-relaxed">
+                {{ $portfolio->aboutMe->description ?? 'No content yet.' }}
+            </p>
+        </div>
+    </div>
+</section>
+
 
         <!-- Skills -->
         <section class="mb-16 animate-fade-in">

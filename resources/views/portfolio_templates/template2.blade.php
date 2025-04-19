@@ -67,18 +67,36 @@
 
         <!-- About Me -->
         <section class="mb-16 animate-slide-up">
-            <div class="bg-white rounded-3xl shadow-lg border border-white/20 overflow-hidden backdrop-blur-sm bg-white/80 animate-tilt">
-                <div class="p-8 md:p-10">
-                    <h2 class="text-2xl md:text-3xl font-bold text-dark-900 mb-6 flex items-center">
-                        <span class="w-8 h-0.5 bg-primary-500 mr-4"></span>
-                        About Me
-                    </h2>
+    <div class="bg-white rounded-3xl shadow-lg border border-white/20 overflow-hidden backdrop-blur-sm bg-white/80 animate-tilt">
+        <div class="p-8 md:p-10">
+            <h2 class="text-2xl md:text-3xl font-bold text-dark-900 mb-6 flex items-center">
+                <span class="w-8 h-0.5 bg-primary-500 mr-4"></span>
+                About Me
+            </h2>
+
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                {{-- Image --}}
+                @if (!empty($portfolio->aboutMe->image))
+                    <div class="text-center">
+                        <img 
+                            src="{{ asset($portfolio->aboutMe->image) }}" 
+                            alt="About Me Image" 
+                            class="rounded-xl mx-auto max-h-72 shadow-md"
+                        >
+                    </div>
+                @endif
+
+                {{-- Description --}}
+                <div>
                     <p class="text-dark-900/80 text-lg leading-relaxed">
                         {{ $portfolio->aboutMe->description ?? 'No content yet.' }}
                     </p>
                 </div>
             </div>
-        </section>
+        </div>
+    </div>
+</section>
+
 
         <!-- Skills -->
         <section class="mb-16 animate-slide-up">

@@ -8,7 +8,7 @@ class AboutMe extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['portfolio_id', 'description'];
+    protected $fillable = ['portfolio_id', 'description', 'image'];
 
     public function portfolio()
     {

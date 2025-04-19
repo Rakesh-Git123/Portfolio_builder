@@ -46,7 +46,7 @@
 
             <div class="flex flex-wrap gap-2 mb-4">
                 <a href="{{ route('portfolios.show', $portfolio->id) }}"
-                    class="flex-1 text-center bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium py-2 px-3 rounded transition">View</a>
+                    class="flex-1 text-center bg-blue-500 hover:bg-blue-600 text-white text-sm font-medium py-2 px-3 rounded transition no-underline">View</a>
 
                 <button type="button"
                     class="flex-1 text-center bg-gray-500 hover:bg-gray-600 text-white text-sm font-medium py-2 px-3 rounded transition"
@@ -75,23 +75,24 @@
                 <button class="w-full bg-yellow-100 hover:bg-yellow-200 text-yellow-700 text-sm py-2 rounded transition" data-bs-toggle="modal" data-bs-target="#addProjectModal" data-portfolio-id="{{ $portfolio->id }}">+ Add Project</button>
 
                 <button class="w-full bg-cyan-100 hover:bg-cyan-200 text-cyan-700 text-sm py-2 rounded transition" data-bs-toggle="modal" data-bs-target="#addExperienceModal" data-portfolio-id="{{ $portfolio->id }}">+ Add Experience</button>
-
                 @if ($portfolio->aboutMe)
-                    <button class="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm py-2 rounded transition"
-                        data-bs-toggle="modal"
-                        data-bs-target="#editAboutMeModal"
-                        data-portfolio-id="{{ $portfolio->id }}"
-                        data-description="{{ $portfolio->aboutMe->description }}">
-                        ✏️ Update About Me
-                    </button>
-                @else
-                    <button class="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm py-2 rounded transition"
-                        data-bs-toggle="modal"
-                        data-bs-target="#addAboutMeModal"
-                        data-portfolio-id="{{ $portfolio->id }}">
-                        + Add About Me
-                    </button>
-                @endif
+    <button class="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm py-2 rounded transition"
+        data-bs-toggle="modal"
+        data-bs-target="#editAboutMeModal"
+        data-portfolio-id="{{ $portfolio->id }}"
+        data-about-id="{{ $portfolio->aboutMe->id }}"
+        data-description="{{ $portfolio->aboutMe->description }}">
+        ✏️ Update About Me
+    </button>
+@else
+    <button class="w-full bg-gray-100 hover:bg-gray-200 text-gray-800 text-sm py-2 rounded transition"
+        data-bs-toggle="modal"
+        data-bs-target="#addAboutMeModal"
+        data-portfolio-id="{{ $portfolio->id }}">
+        + Add About Me
+    </button>
+@endif
+
             </div>
         </div>
     @empty
@@ -295,7 +296,7 @@
 <!-- Add About Me Modal -->
 <div class="modal fade" id="addAboutMeModal" tabindex="-1" aria-labelledby="addAboutMeModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <form method="POST">
+        <form method="POST" enctype="multipart/form-data">
             @csrf
             <div class="modal-content">
                 <div class="modal-header">
@@ -307,6 +308,10 @@
                         <label for="about_description" class="form-label">Description</label>
                         <textarea class="form-control" id="about_description" name="description" rows="5" placeholder="Tell something about yourself..." required></textarea>
                     </div>
+                    <div class="mb-3">
+                        <label for="about_image" class="form-label">Upload Image (optional)</label>
+                        <input type="file" class="form-control" id="about_image" name="image" accept="image/*">
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-success">Add</button>
@@ -317,9 +322,10 @@
     </div>
 </div>
 
+
 <div class="modal fade" id="editAboutMeModal" tabindex="-1" aria-labelledby="editAboutMeModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <form method="POST">
+        <form method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <div class="modal-content">
@@ -328,7 +334,14 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <textarea class="form-control" name="description" id="edit_about_description" rows="5" required></textarea>
+                    <div class="mb-3">
+                        <label for="edit_about_description" class="form-label">Description</label>
+                        <textarea class="form-control" name="description" id="edit_about_description" rows="5" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_about_image" class="form-label">Update Image (optional)</label>
+                        <input type="file" class="form-control" name="image" id="edit_about_image" accept="image/*">
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-success">Update</button>
@@ -338,6 +351,7 @@
         </form>
     </div>
 </div>
+
 
 
     <!-- Bootstrap 5 JS -->
@@ -433,17 +447,22 @@ editModal.addEventListener('show.bs.modal', function (event) {
 
 <script>
     const editAboutMeModal = document.getElementById('editAboutMeModal');
+
     editAboutMeModal.addEventListener('show.bs.modal', function (event) {
         const button = event.relatedTarget;
         const portfolioId = button.getAttribute('data-portfolio-id');
+        const aboutId = button.getAttribute('data-about-id');
         const description = button.getAttribute('data-description');
-        const form = editAboutMeModal.querySelector('form');
-        const textarea = document.getElementById('edit_about_description');
 
-        textarea.value = description;
-        form.action = `/portfolios/${portfolioId}/about-me/${portfolioId}`;
+        const form = editAboutMeModal.querySelector('form');
+        const descField = editAboutMeModal.querySelector('#edit_about_description');
+
+        form.action = `/portfolios/${portfolioId}/about-me/${aboutId}`;
+        descField.value = description;
     });
- </script>
+</script>
+
+
 
 </body>
 </html> 
